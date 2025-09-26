@@ -26,56 +26,16 @@ This is the platform-agnostic "source of truth." All platform-specific product m
 -   **`canonicalId`:** A stable, internally-generated UUID for each product variant. This ID is never sent to the platforms and is used to reliably track a variant through any number of conversions.
 -   **`meta`:** A special field on both the product and variant level that acts as a storage container for all platform-specific identifiers and metadata. This prevents platform data from overwriting canonical fields.
 
-```typescript
-// src/models/CanonicalProduct.ts
-
-export interface PlatformMeta {
-  [platform: string]: {
-    id?: string | number;
-    sku?: string;
-    [key: string]: any;
-  };
-}
-
-export interface CanonicalVariant {
-  canonicalId: string; // The stable, internal ID
-  title: string;
-  price: number;
-  sku: string;
-  inventory: number;
-  meta: PlatformMeta; // Stores Shopify ID, Woo ID, eBay SKU, etc.
-}
-
-export interface CanonicalProduct {
-  // ... top-level fields
-  variants: CanonicalVariant[];
-  meta: PlatformMeta;
-}
-```
-
 ### 2. The Adapter Pattern
 
 Each platform is handled by a dedicated `Adapter` that knows how to convert data to and from the Canonical Model.
 
--   **`fromPlatform(product)`:** Converts a platform-specific product (e.g., a `ShopifyProduct`) into a `CanonicalProduct`.
+-   **`fromPlatform(product)`:** Converts a platform-specific product into a `CanonicalProduct`.
 -   **`toPlatform(product)`:** Converts a `CanonicalProduct` back into a platform-specific product.
-
-```typescript
-// src/adapters/Adapter.ts
-export interface Adapter<T> {
-  fromPlatform(platformProduct: T): CanonicalProduct;
-  toPlatform(canonicalProduct: CanonicalProduct): T;
-}
-```
 
 ### 3. Intelligent Metadata Persistence
 
-This is the key to a lossless round-trip. The adapters are designed to preserve the `meta` object across all conversions.
-
--   **For platforms with metadata support (like WooCommerce):** The entire canonical `meta` object is serialized and stored in a `meta_data` field.
--   **For platforms without metadata support (like eBay):** The `canonicalId`, `title`, and `meta` object are serialized into a JSON string and cleverly embedded within a field the platform *does* support, like the SKU.
-
-This ensures that when a product completes a `Shopify -> Woo -> eBay` round trip, the final canonical model still contains the original Shopify IDs, ready for a sync back to the source.
+This is the key to a lossless round-trip. The adapters are designed to preserve the `meta` object across all conversions by storing it in platform-specific fields (like WooCommerce's `meta_data` or by encoding it in an eBay SKU).
 
 ## Project Structure
 
@@ -83,14 +43,11 @@ This ensures that when a product completes a `Shopify -> Woo -> eBay` round trip
 product-adapters/
 ├── src/
 │   ├── adapters/
-│   │   ├── Adapter.ts          # The generic adapter interface
-│   │   ├── ShopifyAdapter.ts   # Handles Shopify products
-│   │   ├── WooAdapter.ts       # Handles WooCommerce products
-│   │   ├── EbayAdapter.ts      # Handles eBay products
-│   │   └── types.ts            # Platform-specific type definitions
-│   └── models/
-│       └── CanonicalProduct.ts # The core canonical model
-├── test-conversion.ts          # The round-trip test runner
+│   │   ├── ... (Adapter files)
+│   ├── models/
+│   │   └── CanonicalProduct.ts
+│   └── index.ts                # The single public entry point
+├── test-conversion.ts
 ├── package.json
 └── README.md
 ```
@@ -100,7 +57,7 @@ product-adapters/
 ### Prerequisites
 
 -   Node.js and npm
--   ts-node
+-   TypeScript and ts-node
 
 ### Installation
 
@@ -113,32 +70,88 @@ product-adapters/
 
 ### Running the Test
 
-The project includes a round-trip conversion test that verifies the core logic. It converts a sample Shopify product through the entire adapter chain and performs an intelligent diff to ensure no data was lost or mutated.
-
-To run the test, execute:
+The project includes a round-trip conversion test that verifies the core logic. To run the test, execute:
 
 ```bash
 npm run test:conversion
 ```
 
-You should see a success message confirming that all attributes and variants were preserved.
+## Usage
 
-```--- Starting Round Trip Test ---
-✅ Step 1: Shopify → Canonical (Initial state with new canonicalIds)
-✅ Step 2: Canonical → Woo → Canonical
-✅ Step 3: Canonical → eBay → Canonical (Final state)
-------------------------------------
-✅ SUCCESS: Attributes and variants preserved perfectly through the entire round-trip.
+Once the package is installed in your project, you can easily import all necessary adapters, models, and types from the root.
+
+### 1. Installation in Another Project
+
+
+```bash
+npm install github:pguardiario/product-adapters
 ```
+
+### 2. Example: Syncing a Product from Shopify to WooCommerce
+
+Here’s a practical example of how you would use the library to convert a product fetched from the Shopify API into a payload ready to be sent to the WooCommerce API.
+
+```typescript
+import {
+  ShopifyAdapter,
+  WooAdapter,
+  CanonicalProduct,
+  ShopifyProduct // Use this to type your platform-specific data
+} from 'product-adapters';
+
+// 1. Instantiate the adapters you need.
+const shopifyAdapter = new ShopifyAdapter();
+const wooAdapter = new WooAdapter();
+
+// 2. Assume you have a product object fetched from the Shopify API.
+const shopifyProduct: ShopifyProduct = {
+  id: "shopify123",
+  title: "Cool Shirt",
+  body_html: "A very cool shirt.",
+  variants: [
+    { id: "v1", title: "Red / M", price: "29.99", sku: "SKU-RED-M", inventory_quantity: 10 },
+    { id: "v2", title: "Blue / L", price: "31.99", sku: "SKU-BLU-L", inventory_quantity: 5 }
+  ],
+  images: [{ src: "https://example.com/shirt.jpg" }]
+};
+
+// 3. Convert the Shopify product into the canonical model.
+const canonicalProduct: CanonicalProduct = shopifyAdapter.fromPlatform(shopifyProduct);
+
+console.log('--- Canonical Product ---');
+console.log(canonicalProduct.variants);
+// Outputs an object with a new `canonicalId` and a `meta` field:
+// {
+//   canonicalId: '...',
+//   title: 'Red / M',
+//   ...,
+//   meta: { shopify: { id: 'v1' } }
+// }
+
+// 4. Convert the canonical product into the WooCommerce format.
+const wooPayload = wooAdapter.toPlatform(canonicalProduct);
+
+console.log('\n--- WooCommerce Payload ---');
+console.log(wooPayload.variations);
+// The output is a payload ready for the WooCommerce API.
+// Note how it now contains `meta_data` to preserve the canonical info.
+// {
+//   id: undefined,
+//   sku: 'SKU-RED-M',
+//   ...,
+//   meta_data: [
+//     { key: '_canonicalId', value: '...' },
+//     { key: '_canonicalVariantMeta', value: { shopify: { id: 'v1' } } }
+//   ]
+// }
+```
+This demonstrates the core workflow: **Platform A → Canonical → Platform B**. The canonical model acts as the stable intermediary, ensuring no data is lost in translation.
 
 ## Future Work
 
-This library provides the foundational proof-of-concept for a robust sync engine. Next steps could include:
-
 -   **Adding More Adapters:** For platforms like BigCommerce, Magento, or Amazon.
--   **Real API Integration:** Connecting the adapters to the actual platform APIs to fetch and push data.
--   **Sync Engine:** A central service that orchestrates the synchronization logic, manages schedules, and handles conflicts.
--   **Error Handling and Logging:** Implementing robust error handling for API failures and data validation issues.
+-   **Real API Integration:** Connecting the adapters to the actual platform APIs.
+-   **Sync Engine:** A central service to orchestrate synchronization and handle conflicts.
 
 ## License
 
