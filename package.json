@@ -1,0 +1,27 @@
+{
+  "name": "product-sync",
+  "version": "1.0.0",
+  "description": "A TypeScript library for synchronizing product data across e-commerce platforms using a canonical data model.",
+  "license": "MIT",
+  "author": "pguardiario@gmail.com",
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run test:conversion",
+    "test:conversion": "ts-node test-conversion.ts"
+  },
+  "dependencies": {
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "@types/uuid": "^9.0.8",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
