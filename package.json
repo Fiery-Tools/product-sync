@@ -1,6 +1,6 @@
 {
   "name": "@fiery-tools/product-sync",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A TypeScript library for synchronizing product data across e-commerce platforms using a canonical data model.",
   "license": "MIT",
   "author": "Fiery Tools (https://fiery.tools)",
