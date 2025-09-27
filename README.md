@@ -40,7 +40,7 @@ This is the key to a lossless round-trip. The adapters are designed to preserve 
 ## Project Structure
 
 ```
-product-adapters/
+product-sync/
 ├── src/
 │   ├── adapters/
 │   │   ├── ... (Adapter files)
@@ -84,7 +84,7 @@ Once the package is installed in your project, you can easily import all necessa
 
 
 ```bash
-npm install github:pguardiario/product-adapters
+npm install @fiery-tools/product-sync
 ```
 
 ### 2. Example: Syncing a Product from Shopify to WooCommerce
@@ -97,7 +97,7 @@ import {
   WooAdapter,
   CanonicalProduct,
   ShopifyProduct // Use this to type your platform-specific data
-} from 'product-adapters';
+} from 'product-sync';
 
 // 1. Instantiate the adapters you need.
 const shopifyAdapter = new ShopifyAdapter();
