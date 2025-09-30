@@ -1,0 +1,128 @@
+  {
+    "id": 85,
+    "name": "Single",
+    "slug": "single",
+    "permalink": "https://wordpress.fiery.tools/product/single/",
+    "date_created": "2025-09-28T05:11:48",
+    "date_created_gmt": "2025-09-28T05:11:48",
+    "date_modified": "2025-09-28T05:12:52",
+    "date_modified_gmt": "2025-09-28T05:12:52",
+    "type": "simple",
+    "status": "publish",
+    "featured": false,
+    "catalog_visibility": "visible",
+    "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa.</p>\n",
+    "short_description": "<p>This is a simple, virtual product.</p>\n",
+    "sku": "woo-single",
+    "price": "2",
+    "regular_price": "3",
+    "sale_price": "2",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": true,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": true,
+    "downloadable": true,
+    "downloads": [
+      {
+        "id": "9fa406dc-c193-45c9-97cd-7148333f6fae",
+        "name": "Single",
+        "file": "https://demo.woothemes.com/woocommerce/wp-content/uploads/sites/56/2017/08/single.jpg"
+      }
+    ],
+    "download_limit": 1,
+    "download_expiry": 1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "",
+    "dimensions": {
+      "length": "",
+      "width": "",
+      "height": ""
+    },
+    "shipping_required": false,
+    "shipping_taxable": false,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 20,
+        "name": "Music",
+        "slug": "music"
+      }
+    ],
+    "brands": [],
+    "tags": [],
+    "images": [
+      {
+        "id": 114,
+        "date_created": "2025-09-28T05:12:50",
+        "date_created_gmt": "2025-09-28T05:12:50",
+        "date_modified": "2025-09-28T05:12:50",
+        "date_modified_gmt": "2025-09-28T05:12:50",
+        "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/single-1.jpg",
+        "name": "single-1.jpg",
+        "alt": ""
+      }
+    ],
+    "attributes": [],
+    "default_attributes": [],
+    "variations": [],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<del aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>3.00</bdi></span></del> <span class=\"screen-reader-text\">Original price was: &#036;3.00.</span><ins aria-hidden=\"true\"><span class=\"woocommerce-Price-amount amount\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>2.00</bdi></span></ins><span class=\"screen-reader-text\">Current price is: &#036;2.00.</span>",
+    "related_ids": [
+      84
+    ],
+    "meta_data": [
+      {
+        "id": 633,
+        "key": "_wpcom_is_markdown",
+        "value": "1"
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": false,
+    "post_password": "",
+    "global_unique_id": "",
+    "_links": {
+      "self": [
+        {
+          "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/85",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  }

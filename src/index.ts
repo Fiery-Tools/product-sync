@@ -1,34 +1,32 @@
-/**
- * @fileoverview This is the main entry point for the product-sync library.
- * It exports all the public-facing adapters, models, and types so that
- * consumers can import them from a single location.
- *
- * Example Usage:
- * import {
- *   ShopifyAdapter,
- *   CanonicalProduct,
- *   ShopifyProduct
- * } from 'product-sync';
- */
+// src/index.ts
 
-// --- CORE MODELS ---
-// Export the canonical models and core types that define the library's structure.
+import { Adapter } from './adapters/Adapter';
+
 export {
   CanonicalProduct,
   CanonicalVariant,
   PlatformMeta,
 } from './models/CanonicalProduct';
 
-// --- ADAPTERS ---
-// Export the generic Adapter interface for type-checking or creating custom adapters.
 export { Adapter } from './adapters/Adapter';
-
-// Export the concrete adapter classes for each platform.
 export { ShopifyAdapter } from './adapters/ShopifyAdapter';
 export { WooAdapter } from './adapters/WooAdapter';
-export { EbayAdapter } from './adapters/EbayAdapter';
+// export { EbayAdapter } from './adapters/EbayAdapter';
 
-// --- PLATFORM-SPECIFIC TYPES ---
-// Export all the platform-specific data structures from the central types file.
-// This is useful for consumers who need to type the data they fetch from platform APIs.
 export * from './adapters/types';
+
+// use this convert function to turn woo product into shopify product and no special instructions
+export function convert<T, U>(
+  sourceProduct: T,
+  fromAdapter: Adapter<T>,
+  toAdapter: Adapter<U>
+): U | null {
+  const canonicalProduct = fromAdapter.fromPlatform(sourceProduct);
+
+  // If the fromAdapter returned null, propagate it.
+  if (!canonicalProduct) {
+    return null;
+  }
+
+  return toAdapter.toPlatform(canonicalProduct);
+}

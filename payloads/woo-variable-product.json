@@ -1,0 +1,467 @@
+{
+    "id": 72,
+    "name": "V-Neck T-Shirt",
+    "slug": "v-neck-t-shirt",
+    "permalink": "https://wordpress.fiery.tools/product/v-neck-t-shirt/",
+    "date_created": "2025-09-28T05:11:46",
+    "date_created_gmt": "2025-09-28T05:11:46",
+    "date_modified": "2025-09-28T05:13:05",
+    "date_modified_gmt": "2025-09-28T05:13:05",
+    "type": "variable",
+    "status": "publish",
+    "featured": true,
+    "catalog_visibility": "visible",
+    "description": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n",
+    "short_description": "<p>This is a variable product.</p>\n",
+    "sku": "woo-vneck-tee",
+    "price": "15",
+    "regular_price": "",
+    "sale_price": "",
+    "date_on_sale_from": null,
+    "date_on_sale_from_gmt": null,
+    "date_on_sale_to": null,
+    "date_on_sale_to_gmt": null,
+    "on_sale": false,
+    "purchasable": true,
+    "total_sales": 0,
+    "virtual": false,
+    "downloadable": false,
+    "downloads": [],
+    "download_limit": -1,
+    "download_expiry": -1,
+    "external_url": "",
+    "button_text": "",
+    "tax_status": "taxable",
+    "tax_class": "",
+    "manage_stock": false,
+    "stock_quantity": null,
+    "backorders": "no",
+    "backorders_allowed": false,
+    "backordered": false,
+    "low_stock_amount": null,
+    "sold_individually": false,
+    "weight": "0.5",
+    "dimensions": {
+      "length": "24",
+      "width": "1",
+      "height": "2"
+    },
+    "shipping_required": true,
+    "shipping_taxable": true,
+    "shipping_class": "",
+    "shipping_class_id": 0,
+    "reviews_allowed": true,
+    "average_rating": "0.00",
+    "rating_count": 0,
+    "upsell_ids": [],
+    "cross_sell_ids": [],
+    "parent_id": 0,
+    "purchase_note": "",
+    "categories": [
+      {
+        "id": 17,
+        "name": "Tshirts",
+        "slug": "tshirts"
+      }
+    ],
+    "brands": [],
+    "tags": [],
+    "images": [
+      {
+        "id": 97,
+        "date_created": "2025-09-28T05:11:51",
+        "date_created_gmt": "2025-09-28T05:11:51",
+        "date_modified": "2025-09-28T05:11:51",
+        "date_modified_gmt": "2025-09-28T05:11:51",
+        "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vneck-tee-2.jpg",
+        "name": "vneck-tee-2.jpg",
+        "alt": ""
+      },
+      {
+        "id": 98,
+        "date_created": "2025-09-28T05:11:55",
+        "date_created_gmt": "2025-09-28T05:11:55",
+        "date_modified": "2025-09-28T05:11:55",
+        "date_modified_gmt": "2025-09-28T05:11:55",
+        "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vnech-tee-green-1.jpg",
+        "name": "vnech-tee-green-1.jpg",
+        "alt": ""
+      },
+      {
+        "id": 99,
+        "date_created": "2025-09-28T05:11:57",
+        "date_created_gmt": "2025-09-28T05:11:57",
+        "date_modified": "2025-09-28T05:11:57",
+        "date_modified_gmt": "2025-09-28T05:11:57",
+        "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vnech-tee-blue-1.jpg",
+        "name": "vnech-tee-blue-1.jpg",
+        "alt": ""
+      }
+    ],
+    "attributes": [
+      {
+        "id": 1,
+        "name": "Color",
+        "slug": "pa_color",
+        "position": 0,
+        "visible": true,
+        "variation": true,
+        "options": [
+          "Blue",
+          "Green",
+          "Red"
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Size",
+        "slug": "pa_size",
+        "position": 1,
+        "visible": true,
+        "variation": true,
+        "options": [
+          "Large",
+          "Medium",
+          "Small"
+        ]
+      }
+    ],
+    "default_attributes": [],
+    "variations": [
+      {
+        "id": 88,
+        "type": "variation",
+        "date_created": "2025-09-28T05:11:48",
+        "date_created_gmt": "2025-09-28T05:11:48",
+        "date_modified": "2025-09-28T05:12:52",
+        "date_modified_gmt": "2025-09-28T05:12:52",
+        "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa.</p>\n",
+        "permalink": "https://wordpress.fiery.tools/product/v-neck-t-shirt/?attribute_pa_color=blue",
+        "sku": "woo-vneck-tee-blue",
+        "global_unique_id": "",
+        "price": "15",
+        "regular_price": "15",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "status": "publish",
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "stock_status": "instock",
+        "backorders": "no",
+        "backorders_allowed": false,
+        "backordered": false,
+        "low_stock_amount": null,
+        "weight": "0.5",
+        "dimensions": {
+          "length": "24",
+          "width": "1",
+          "height": "2"
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 99,
+          "date_created": "2025-09-28T05:11:57",
+          "date_created_gmt": "2025-09-28T05:11:57",
+          "date_modified": "2025-09-28T05:11:57",
+          "date_modified_gmt": "2025-09-28T05:11:57",
+          "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vnech-tee-blue-1.jpg",
+          "name": "vnech-tee-blue-1.jpg",
+          "alt": ""
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "slug": "pa_color",
+            "option": "Blue"
+          }
+        ],
+        "menu_order": 0,
+        "meta_data": [
+          {
+            "id": 657,
+            "key": "_wpcom_is_markdown",
+            "value": ""
+          }
+        ],
+        "name": "Blue",
+        "parent_id": 72,
+        "_links": {
+          "self": [
+            {
+              "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/72/variations/88",
+              "targetHints": {
+                "allow": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "PATCH",
+                  "DELETE"
+                ]
+              }
+            }
+          ],
+          "collection": [
+            {
+              "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/72/variations"
+            }
+          ],
+          "up": [
+            {
+              "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/72"
+            }
+          ]
+        }
+      },
+      {
+        "id": 87,
+        "type": "variation",
+        "date_created": "2025-09-28T05:11:48",
+        "date_created_gmt": "2025-09-28T05:11:48",
+        "date_modified": "2025-09-28T05:12:52",
+        "date_modified_gmt": "2025-09-28T05:12:52",
+        "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa.</p>\n",
+        "permalink": "https://wordpress.fiery.tools/product/v-neck-t-shirt/?attribute_pa_color=green",
+        "sku": "woo-vneck-tee-green",
+        "global_unique_id": "",
+        "price": "20",
+        "regular_price": "20",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "status": "publish",
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "stock_status": "instock",
+        "backorders": "no",
+        "backorders_allowed": false,
+        "backordered": false,
+        "low_stock_amount": null,
+        "weight": "0.5",
+        "dimensions": {
+          "length": "24",
+          "width": "1",
+          "height": "2"
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 98,
+          "date_created": "2025-09-28T05:11:55",
+          "date_created_gmt": "2025-09-28T05:11:55",
+          "date_modified": "2025-09-28T05:11:55",
+          "date_modified_gmt": "2025-09-28T05:11:55",
+          "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vnech-tee-green-1.jpg",
+          "name": "vnech-tee-green-1.jpg",
+          "alt": ""
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "slug": "pa_color",
+            "option": "Green"
+          }
+        ],
+        "menu_order": 0,
+        "meta_data": [
+          {
+            "id": 649,
+            "key": "_wpcom_is_markdown",
+            "value": ""
+          }
+        ],
+        "name": "Green",
+        "parent_id": 72,
+        "_links": {
+          "self": [
+            {
+              "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/72/variations/87",
+              "targetHints": {
+                "allow": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "PATCH",
+                  "DELETE"
+                ]
+              }
+            }
+          ],
+          "collection": [
+            {
+              "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/72/variations"
+            }
+          ],
+          "up": [
+            {
+              "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/72"
+            }
+          ]
+        }
+      },
+      {
+        "id": 86,
+        "type": "variation",
+        "date_created": "2025-09-28T05:11:48",
+        "date_created_gmt": "2025-09-28T05:11:48",
+        "date_modified": "2025-09-28T05:12:52",
+        "date_modified_gmt": "2025-09-28T05:12:52",
+        "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis orci ac odio dictum tincidunt. Donec ut metus leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed luctus, dui eu sagittis sodales, nulla nibh sagittis augue, vel porttitor diam enim non metus. Vestibulum aliquam augue neque. Phasellus tincidunt odio eget ullamcorper efficitur. Cras placerat ut turpis pellentesque vulputate. Nam sed consequat tortor. Curabitur finibus sapien dolor. Ut eleifend tellus nec erat pulvinar dignissim. Nam non arcu purus. Vivamus et massa massa.</p>\n",
+        "permalink": "https://wordpress.fiery.tools/product/v-neck-t-shirt/?attribute_pa_color=red",
+        "sku": "woo-vneck-tee-red",
+        "global_unique_id": "",
+        "price": "20",
+        "regular_price": "20",
+        "sale_price": "",
+        "date_on_sale_from": null,
+        "date_on_sale_from_gmt": null,
+        "date_on_sale_to": null,
+        "date_on_sale_to_gmt": null,
+        "on_sale": false,
+        "status": "publish",
+        "purchasable": true,
+        "virtual": false,
+        "downloadable": false,
+        "downloads": [],
+        "download_limit": -1,
+        "download_expiry": -1,
+        "tax_status": "taxable",
+        "tax_class": "",
+        "manage_stock": false,
+        "stock_quantity": null,
+        "stock_status": "instock",
+        "backorders": "no",
+        "backorders_allowed": false,
+        "backordered": false,
+        "low_stock_amount": null,
+        "weight": "0.5",
+        "dimensions": {
+          "length": "24",
+          "width": "1",
+          "height": "2"
+        },
+        "shipping_class": "",
+        "shipping_class_id": 0,
+        "image": {
+          "id": 97,
+          "date_created": "2025-09-28T05:11:51",
+          "date_created_gmt": "2025-09-28T05:11:51",
+          "date_modified": "2025-09-28T05:11:51",
+          "date_modified_gmt": "2025-09-28T05:11:51",
+          "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vneck-tee-2.jpg",
+          "name": "vneck-tee-2.jpg",
+          "alt": ""
+        },
+        "attributes": [
+          {
+            "id": 1,
+            "name": "Color",
+            "slug": "pa_color",
+            "option": "Red"
+          }
+        ],
+        "menu_order": 0,
+        "meta_data": [
+          {
+            "id": 641,
+            "key": "_wpcom_is_markdown",
+            "value": ""
+          }
+        ],
+        "name": "Red",
+        "parent_id": 72,
+        "_links": {
+          "self": [
+            {
+              "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/72/variations/86",
+              "targetHints": {
+                "allow": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "PATCH",
+                  "DELETE"
+                ]
+              }
+            }
+          ],
+          "collection": [
+            {
+              "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/72/variations"
+            }
+          ],
+          "up": [
+            {
+              "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/72"
+            }
+          ]
+        }
+      }
+    ],
+    "grouped_products": [],
+    "menu_order": 0,
+    "price_html": "<span class=\"woocommerce-Price-amount amount\" aria-hidden=\"true\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>15.00</bdi></span> <span aria-hidden=\"true\">&ndash;</span> <span class=\"woocommerce-Price-amount amount\" aria-hidden=\"true\"><bdi><span class=\"woocommerce-Price-currencySymbol\">&#36;</span>20.00</bdi></span><span class=\"screen-reader-text\">Price range: &#36;15.00 through &#36;20.00</span>",
+    "related_ids": [
+      92,
+      83,
+      82,
+      75
+    ],
+    "meta_data": [
+      {
+        "id": 464,
+        "key": "_wpcom_is_markdown",
+        "value": "1"
+      }
+    ],
+    "stock_status": "instock",
+    "has_options": true,
+    "post_password": "",
+    "global_unique_id": "",
+    "_links": {
+      "self": [
+        {
+          "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products/72",
+          "targetHints": {
+            "allow": [
+              "GET",
+              "POST",
+              "PUT",
+              "PATCH",
+              "DELETE"
+            ]
+          }
+        }
+      ],
+      "collection": [
+        {
+          "href": "https://wordpress.fiery.tools/wp-json/wc/v3/products"
+        }
+      ]
+    }
+  }

@@ -1,37 +1,46 @@
 // src/models/CanonicalProduct.ts
 
-/**
- * A flexible object to store platform-specific identifiers and metadata.
- * The key is the platform name (e.g., 'shopify', 'woo', 'ebay').
- */
 export interface PlatformMeta {
-  [platform: string]: {
-    id?: string | number;
-    sku?: string; // For platforms like eBay where SKU can differ
-    [key: string]: any; // Allows for other platform-specific data
-  };
+  [key: string]: any;
 }
 
-/**
- * The canonical model for a single product variant.
- */
+// Define a richer, universal image model
+export interface CanonicalImage {
+  id?: number | string;
+  src: string;
+  alt?: string;
+  position?: number;
+}
+
 export interface CanonicalVariant {
-  canonicalId: string; // **NEW**: A stable, internal-only ID generated once.
+  canonicalId: string;
   title: string;
   price: number;
+  compareAtPrice?: number;
   sku: string;
-  inventory: number;
-  meta: PlatformMeta; // **NEW**: Stores platform-specific IDs and data.
+  inventory: number | null;
+  manageStock?: boolean; // NEW: Add the manageStock flag to our universal model
+  taxable?: boolean;
+  requiresShipping?: boolean;
+  meta?: PlatformMeta;
 }
 
-/**
- * The canonical model for a product.
- */
+// Define a universal structure for a product option (like "Color")
+export interface CanonicalProductOption {
+  name: string;
+  values: string[];
+}
+
 export interface CanonicalProduct {
-  id?: string; // The ID from the original source platform.
+  id: string;
   title: string;
   description: string;
-  images: { src: string }[];
+  images: CanonicalImage[];
+  // NEW: Add a property to hold the product-level options
+  options?: CanonicalProductOption[];
+  productType?: string;
+  status?: string;
+  tags?: string[];
   variants: CanonicalVariant[];
-  meta: PlatformMeta; // Stores platform-specific data for the parent product.
+  meta?: PlatformMeta;
 }
