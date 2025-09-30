@@ -1,0 +1,101 @@
+[
+  {
+  "id": "72",
+  "title": "Dumb shit",
+  "body_html": "<p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>\n\n<p>This is a variable product.</p>\n",
+  "images": [
+    {
+      "id": 97,
+      "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vneck-tee-2.jpg",
+      "alt": ""
+    },
+    {
+      "id": 98,
+      "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vnech-tee-green-1.jpg",
+      "alt": ""
+    },
+    {
+      "id": 99,
+      "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vnech-tee-blue-1.jpg",
+      "alt": ""
+    }
+  ],
+  "product_type": "Tshirts",
+  "options": [
+    {
+      "name": "Color",
+      "values": [
+        "Blue",
+        "Green",
+        "Red"
+      ]
+    },
+    {
+      "name": "Size",
+      "values": [
+        "Large",
+        "Medium",
+        "Small"
+      ]
+    }
+  ],
+  "status": "active",
+  "tags": "",
+  "variants": [
+    {
+      "id": "",
+      "title": "Blue",
+      "price": "14",
+      "sku": "ds1",
+      "inventory_quantity": 1,
+      "requires_shipping": true,
+      "taxable": true,
+      "inventory_management": null,
+      "option1": "Blue",
+      "option2": "Large",
+      "option3": null,
+      "image": {
+        "id": 99,
+        "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vnech-tee-blue-1.jpg",
+        "alt": ""
+      }
+    },
+    {
+      "id": "",
+      "title": "Green",
+      "price": "20",
+      "sku": "ds2",
+      "inventory_quantity": 1,
+      "requires_shipping": true,
+      "taxable": true,
+      "inventory_management": null,
+      "option1": "Green",
+      "option2": "Large",
+      "option3": null,
+      "image": {
+        "id": 98,
+        "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vnech-tee-green-1.jpg",
+        "alt": ""
+      }
+    },
+    {
+      "id": "",
+      "title": "Red",
+      "price": "20",
+      "sku": "ds3",
+      "inventory_quantity": 1,
+      "requires_shipping": true,
+      "taxable": true,
+      "inventory_management": null,
+      "option1": "Red",
+      "option2": "Large",
+      "option3": null,
+      "image": {
+        "id": 97,
+        "src": "https://wordpress.fiery.tools/wp-content/uploads/2025/09/vneck-tee-2.jpg",
+        "alt": ""
+      }
+    }
+  ]
+}
+]

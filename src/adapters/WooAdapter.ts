@@ -1,7 +1,7 @@
 // src/adapters/WooAdapter.ts
 import { Adapter } from "./Adapter";
 import { CanonicalProduct, CanonicalVariant, PlatformMeta } from "../models/CanonicalProduct";
-import { WooProduct, WooVariant, WooSimpleProduct, WooVariableProduct } from "./types";
+import { WooProduct, WooVariant, WooSimpleProduct, WooVariableProduct, WooAttribute } from "./types";
 import path from "path";
 
 /**
@@ -111,7 +111,8 @@ export class WooAdapter implements Adapter<WooProduct> {
   toPlatform(product: CanonicalProduct): WooProduct {
     const productMeta = { key: '_canonicalMeta', value: product.meta };
     const mustBeVariable = product.meta?.woo?.productType === 'variable';
-    const isSimple = product.variants.length === 1 && !mustBeVariable;
+    // A product is variable if it has more than one variant OR it's explicitly marked as such.
+    const isVariable = product.variants.length > 1 || mustBeVariable;
 
     const baseProperties = {
       id: product.meta?.woo?.id as number,
@@ -134,41 +135,77 @@ export class WooAdapter implements Adapter<WooProduct> {
       meta_data: [productMeta],
     };
 
-    if (isSimple) {
+    if (!isVariable) {
       const variant = product.variants[0];
       const simpleProduct: WooSimpleProduct = {
         ...baseProperties,
         type: 'simple',
         sku: variant.sku,
-
         regular_price: (variant.compareAtPrice || variant.price).toString(),
         sale_price: variant.compareAtPrice ? variant.price.toString() : '',
+        // For simple products, directly set stock status and quantity
+        // manage_stock: variant.manageStock ?? false,
         stock_quantity: variant.inventory,
+        stock_status: (variant.inventory ?? 0) > 0 || !(variant.manageStock) ? 'instock' : 'outofstock',
       };
       return simpleProduct;
     }
 
-    const variations: WooVariant[] = product.variants.map(v => ({
-      id: v.meta?.woo?.id as number,
-      sku: v.sku,
-      regular_price: (v.compareAtPrice || v.price).toString(),
-      sale_price: v.compareAtPrice ? v.price.toString() : '',
-            manage_stock: v.manageStock ?? false, // Default to false if undefined
+    // --- Start of logic for Variable Products ---
 
-      stock_quantity: v.inventory,
-      attributes: v.title.split(' / ').map(t => ({ name: 'Option', option: t.trim() })),
-      meta_data: [
-        { key: '_canonicalId', value: v.canonicalId },
-        { key: '_canonicalVariantMeta', value: v.meta },
-      ],
-    }));
+    // 1. Map the canonical variants to WooCommerce variations.
+    const variations: WooVariant[] = product.variants.map((v, i) => {
+      let variation: WooVariant = {
+        id: v.meta?.woo?.id as number,
+        sku: v.sku,
+        regular_price: (v.compareAtPrice || v.price).toString(),
+        sale_price: v.compareAtPrice ? v.price.toString() : '',
+        manage_stock: v.manageStock ?? false,
+        stock_quantity: v.inventory,
+        stock_status: (v.inventory ?? 0) > 0 || !(v.manageStock) ? 'instock' : 'outofstock',
+        // Define the specific attribute for this variation.
+        attributes: v.attributes ? v.attributes.map(a => ({
+          name: a.name,
+          option: a.value
+        })) : [],
+
+        meta_data: [
+          { key: '_canonicalId', value: v.canonicalId },
+          { key: '_canonicalVariantMeta', value: v.meta },
+        ],
+      }
+      return variation
+    });
+
+    // 2. NEW: Define the attributes for the PARENT product. This is the crucial step.
+    // It tells WooCommerce what options are available for this variable product.
+
+    const parentAttributes: WooAttribute[] = (product.options ?? []).map(option => ({
+      name: option.name,
+      variation: true,
+      visible: true,
+      options: option.values
+    }))
+
+    // 3. NEW: Set a default selected variation for the product page.
+    // const defaultAttributes = product.variants.length > 0
+    //   ? [{ name: 'Option', option: product.variants[0].title.trim() }]
+    //   : [];
 
     const variableProduct: WooVariableProduct = {
       ...baseProperties,
       type: 'variable',
-      variations,
       sku: product.meta?.woo?.parentSku,
+      // 4. NEW: Add the attribute definitions to the payload.
+
+      attributes: parentAttributes,
+      // default_attributes: defaultAttributes,
+      variations: variations,
+      // The parent product's stock status depends on its variations.
+      stock_status: variations.some(v => v.stock_status === 'instock') ? 'instock' : 'outofstock',
+
     };
+
     return variableProduct;
   }
 }

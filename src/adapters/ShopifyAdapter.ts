@@ -1,13 +1,15 @@
 // src/adapters/ShopifyAdapter.ts
 
 import { Adapter } from "./Adapter";
-import { CanonicalImage, CanonicalProduct } from "../models/CanonicalProduct";
+import { CanonicalAttribute, CanonicalImage, CanonicalProduct, CanonicalProductOption } from "../models/CanonicalProduct";
 import { ShopifyImage, ShopifyProduct, ShopifyVariant } from "./types";
 import { v4 as uuidv4 } from 'uuid';
 
 export class ShopifyAdapter implements Adapter<ShopifyProduct> {
   fromPlatform(product: ShopifyProduct): CanonicalProduct {
-    return {
+
+
+    let toProduct: CanonicalProduct = {
       id: product.id,
       title: product.title,
       description: product.body_html,
@@ -18,23 +20,48 @@ export class ShopifyAdapter implements Adapter<ShopifyProduct> {
       meta: {
         shopify: { id: product.id },
       },
-
-
-      variants: product.variants.map((v: ShopifyVariant) => ({
-        canonicalId: uuidv4(), // Generate a new stable ID
-        title: v.title,
-        price: parseFloat(v.price),
-        compareAtPrice: v.compare_at_price ? parseFloat(v.compare_at_price) : undefined,
-        sku: v.sku,
-        image: v.image,
-        inventory: v.inventory_quantity,
-        requiresShipping: v.requires_shipping,
-        taxable: v.taxable,
-        meta: {
-          shopify: { id: v.id },
-        },
-      })),
+      variants: product.variants.map((v: ShopifyVariant) => {
+        let attributes: CanonicalAttribute[] = []
+        let options = product.options
+        for(let i = 1; i<=3; i++){
+          const key = `option${i}` as keyof ShopifyVariant; // Assert the key's type
+          let optionName: any = v[key];
+          if(optionName){
+            attributes.push({
+              name: options?.[i - 1]?.name || "Option",
+              value: "" + v[key],
+            })
+          }
+        }
+        let variant = {
+          canonicalId: uuidv4(), // Generate a new stable ID
+          title: v.title,
+          price: parseFloat(v.price),
+          compareAtPrice: v.compare_at_price ? parseFloat(v.compare_at_price) : undefined,
+          sku: v.sku,
+          attributes,
+          image: v.image,
+          inventory: v.inventory_quantity,
+          requiresShipping: v.requires_shipping,
+          taxable: v.taxable,
+          meta: {
+            shopify: { id: v.id },
+          },
+        }
+        return variant
+      }),
     };
+
+    if (product.options) {
+      let options: CanonicalProductOption[] = product.options?.map(option => ({
+        name: option.name,
+        values: option.values
+      }))
+      toProduct.options = options
+    }
+
+
+    return toProduct
   }
 
   toPlatform(product: CanonicalProduct): ShopifyProduct {
@@ -60,7 +87,7 @@ export class ShopifyAdapter implements Adapter<ShopifyProduct> {
         option2: optionValues[1] || options?.[1]?.values[0] || null,
         option3: optionValues[2] || options?.[2]?.values[0] || null,
       };
-      if(v.image){
+      if (v.image) {
         let { id, src, alt, position } = v.image
         let image: ShopifyImage = {
           id: id as number | undefined,

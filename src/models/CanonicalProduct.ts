@@ -12,11 +12,17 @@ export interface CanonicalImage {
   position?: number;
 }
 
+export interface CanonicalAttribute {
+  name: string;
+  value: string;
+}
+
 export interface CanonicalVariant {
   canonicalId: string;
   title: string;
   price: number;
   compareAtPrice?: number;
+  attributes?: CanonicalAttribute[],
   sku: string;
   inventory: number | null;
   manageStock?: boolean;

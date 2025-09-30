@@ -32,11 +32,11 @@ export class WooCommerceClient implements Client<WooProduct> {
     this.apiBaseUrl = `${this.config.storeUrl}/wp-json/wc/${this.apiVersion}`;
   }
 
-   /**
-   * Fetches the entire product catalog from WooCommerce, automatically handling pagination
-   * and enriching variable products with their full variation data.
-   * @returns A promise that resolves to an array of all WooProduct objects.
-   */
+  /**
+  * Fetches the entire product catalog from WooCommerce, automatically handling pagination
+  * and enriching variable products with their full variation data.
+  * @returns A promise that resolves to an array of all WooProduct objects.
+  */
   async getAllProducts(): Promise<WooProduct[]> {
     const allProducts: WooProduct[] = [];
     let page = 1;
@@ -61,7 +61,7 @@ export class WooCommerceClient implements Client<WooProduct> {
 
       // Identify variable products and create promises to fetch their variations
       const variationPromises = productsOnPage
-         .filter((p): p is WooVariableProduct => p.type === 'variable' && p.variations.length > 0)
+        .filter((p): p is WooVariableProduct => p.type === 'variable' && p.variations.length > 0)
         .map(async (product) => { // 'product' is now correctly inferred as WooVariableProduct
           console.log(`[Client] Fetching variations for product ID: ${product.id}`);
           const variations = await this._request<WooVariant[]>(`products/${product.id}/variations`, { per_page: '100' });
@@ -89,10 +89,12 @@ export class WooCommerceClient implements Client<WooProduct> {
     const products = await this._request<WooProduct[]>('products', { sku });
     if (products.length > 0) {
       // If the found product is variable, we should fetch its variations as well
-      const product = products[0];
-      if (product.type === 'variable' && product.variations.length > 0) {
+      const product: any = products[0];
+
+      if (['variable', 'variation'].includes(product.type)) {
+        let productId = product.type === 'variation' ? product.parent_id : product.id
         console.log(`[Client] Fetching variations for product SKU: ${sku}`);
-        const variations = await this._request<WooVariant[]>(`products/${product.id}/variations`, { per_page: '100' });
+        const variations = await this._request<WooVariant[]>(`products/${productId}/variations`, { per_page: '100' });
         product.variations = variations;
       }
       return product;
@@ -102,12 +104,128 @@ export class WooCommerceClient implements Client<WooProduct> {
 
   // --- Placeholders for methods to be implemented later ---
 
-  createProduct(product: WooProduct): Promise<WooProduct> {
-    throw new Error('Method not implemented.');
+  async createProduct(product: WooProduct): Promise<WooProduct> {
+    // Check if the product is a variable product that has variations.
+    if (product.type === 'variable' && 'variations' in product && Array.isArray(product.variations) && product.variations.length > 0) {
+      // --- Start: Two-Step Process for Variable Products ---
+
+      // Type guard to ensure we are working with a variable product structure.
+      const variableProduct = product as WooVariableProduct;
+
+      // Store the variations temporarily. We will create them in the second step.
+      const variationsToCreate = [...variableProduct.variations];
+
+      // Create a payload for the parent product by removing the 'variations' key.
+      const { variations, ...parentProductPayload } = variableProduct;
+
+      // Step 1: Create the parent product with its attributes but WITHOUT variations.
+      console.log('[Client] Step 1: Creating parent variable product...');
+      const createdParentProduct = await this._request<WooVariableProduct>('products', {}, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(parentProductPayload),
+      });
+      console.log(`[Client] Parent product created successfully with ID: ${createdParentProduct.id}`);
+
+      // Step 2: Use the new product ID to batch-create its variations.
+      if (createdParentProduct.id && variationsToCreate.length > 0) {
+        console.log(`[Client] Step 2: Batch-creating ${variationsToCreate.length} variations for product ID ${createdParentProduct.id}...`);
+
+        // The batch endpoint expects a payload with a 'create' key.
+        const batchPayload = {
+          create: variationsToCreate,
+        };
+
+        const batchResponse = await this._request<{ create: WooVariant[] }>(`products/${createdParentProduct.id}/variations/batch`, {}, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(batchPayload),
+        });
+        console.log('[Client] Variations created successfully.');
+
+        // Attach the newly created variations (with their new IDs) to the parent product object.
+        createdParentProduct.variations = batchResponse.create;
+      }
+
+      return createdParentProduct;
+      // --- End: Two-Step Process ---
+
+    } else {
+      // For simple products (or variable products without variations), use the original single-step process.
+      console.log('[Client] Creating a simple product...');
+      return this._request<WooProduct>('products', {}, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(product),
+      });
+    }
   }
 
-  updateProduct(id: string | number, product: WooProduct): Promise<WooProduct> {
-    throw new Error('Method not implemented.');
+
+
+  async syncProducts(
+    products: WooProduct[]
+  ): Promise<{ created: number; updated: number, skipped: number }> {
+    const results = { created: 0, updated: 0, skipped: 0 };
+
+    for (const product of products) {
+      let skuToCheck: string | undefined;
+
+      if (product.type === 'simple') {
+        skuToCheck = product.sku;
+      } else if (product.type === 'variable' && product.variations.length > 0) {
+        skuToCheck = product.variations[0].sku;
+      }
+
+      if (!skuToCheck) {
+        console.warn(`- Skipping product "${product.name}" because no valid SKU could be found.`);
+        results.skipped++;
+        continue;
+      }
+
+      const existingProduct: any = await this.getProductBySku(skuToCheck);
+
+      if (existingProduct && 'variations' in product) {
+        console.log(`- Updating product "${product.name}" (found via SKU: ${skuToCheck}, updating ID: ${existingProduct.id})...`);
+        // We need to pass the full product object to update all its details and variations.
+        await this.updateVariations(existingProduct, product.variations);
+        results.updated++;
+      } else {
+        console.log(`- Creating new product "${product.name}" (could not find by SKU: ${skuToCheck})...`);
+        let response = await this.createProduct(product);
+        results.created++;
+      }
+    }
+
+    return results
+  }
+
+  async updateVariations(oldProduct: any, variants: any): Promise<any> {
+    for (let variation of oldProduct.variations) {
+      for (let variant of variants) {
+        if (variation.sku === variant.sku) {
+          variant.id = variation.id
+        }
+      }
+    }
+
+    const batchPayload = { update: variants };
+    let productId = oldProduct.type === 'variation' ? oldProduct.parent_id : oldProduct.id
+
+    const response = await this._request<{ update: WooVariant[] }>(`products/${productId}/variations/batch`, {}, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(batchPayload),
+    });
+
+    // Return a new product object with the updated variations
+    return response
+  }
+
+  async updateProduct(id: string | number, product: WooProduct): Promise<WooProduct> {
+    throw new Error('not implemented')
   }
 
 
@@ -119,10 +237,10 @@ export class WooCommerceClient implements Client<WooProduct> {
    * @param endpoint The API endpoint to call (e.g., 'products').
    * @param params Optional query parameters to add to the request.
    */
-  private async _request<T>(endpoint: string, params: Record<string, string> = {}): Promise<T> {
+  private async _request<T>(endpoint: string, params: Record<string, string> = {}, options: RequestInit = {}): Promise<T> {
     const url = this._buildUrl(endpoint, params);
 
-    const response = await fetch(url);
+    const response = await fetch(url, options);
 
     if (!response.ok) {
       const errorBody = await response.text();

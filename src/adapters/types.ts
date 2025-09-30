@@ -70,9 +70,10 @@ export interface WooTag {
 }
 
 export interface WooAttribute {
-    id: number;
+    // id?: number;
     name: string;
     variation: boolean;
+    visible: boolean;
     options: string[];
 }
 
@@ -85,6 +86,7 @@ interface WooBaseProduct {
   status: 'publish' | 'pending' | 'draft' | 'private';
   categories?: WooCategory[];
   tags?: WooTag[];
+  sku: string;
   virtual?: boolean;
   shipping_required?: boolean;
   tax_status?: 'taxable' | 'shipping' | 'none';
@@ -99,18 +101,18 @@ interface WooBaseProduct {
  */
 export interface WooSimpleProduct extends WooBaseProduct {
   type: 'simple';
-  sku: string;
   regular_price: string;
   sale_price: string;
   stock_quantity: number | null;
 }
+
 
 /**
  * Represents a WooCommerce 'variable' product with child variations.
  */
 export interface WooVariableProduct extends WooBaseProduct {
   type: 'variable';
-  sku?: string; // sometimes sku is here
+  attributes: WooAttribute[];
   variations: WooVariant[];
 }
 
