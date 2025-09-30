@@ -22,7 +22,8 @@ export interface ShopifyVariant {
   inventory_quantity: number;
   taxable?: boolean;
   requires_shipping?: boolean;
-  // NEW: Add Shopify's specific option fields
+  imageSrc?: string;
+  image?: ShopifyImage;
   inventory_management?: 'shopify' | null;
   inventory_policy?: 'deny' | 'continue';
   option1?: string | null;
@@ -135,13 +136,13 @@ export interface WooVariant {
   sku: string;
   regular_price: string;
   sale_price: string;
-  manage_stock: boolean; // NEW: Add the manage_stock flag
+  manage_stock: boolean;
   stock_quantity: number | null;
   stock_status?: 'instock' | 'outofstock' | 'onbackorder';
   attributes: { name: string; option: string }[];
+  image?: WooImage; // <-- ADD THIS LINE
   meta_data?: { key: string; value: any }[];
 }
-
 // --------------- eBay ---------------
 export interface EbayInventoryItem {
   sku: string;

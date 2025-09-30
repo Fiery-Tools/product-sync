@@ -66,6 +66,7 @@ export class WooAdapter implements Adapter<WooProduct> {
           price: parseFloat(v.sale_price || v.regular_price),
           compareAtPrice: v.sale_price ? parseFloat(v.regular_price) : undefined,
           sku: v.sku,
+          image: v.image,
           inventory,
           manageStock: v.manage_stock, // NEW: Pass the flag to the canonical model
 

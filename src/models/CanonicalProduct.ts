@@ -19,9 +19,13 @@ export interface CanonicalVariant {
   compareAtPrice?: number;
   sku: string;
   inventory: number | null;
-  manageStock?: boolean; // NEW: Add the manageStock flag to our universal model
+  manageStock?: boolean;
   taxable?: boolean;
+  image?: CanonicalImage;
   requiresShipping?: boolean;
+  weight?: number;
+  imageId?: number | string | null; // <-- ADD THIS LINE
+  imageSrc?: string | null; // <-- ADD THIS LINE
   meta?: PlatformMeta;
 }
 

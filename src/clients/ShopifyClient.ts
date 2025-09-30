@@ -103,10 +103,18 @@ export class ShopifyClient implements Client<ShopifyProduct> {
       }
     }
 
-    const createPromises = productsToCreate.map(product => this.createProduct(product));
-    const updatePromises = productsToUpdate.map(product => this._updateSingleProduct(product, existingVariantsMap));
-    const createdResults = await Promise.all(createPromises);
-    const updatedResults = await Promise.all(updatePromises);
+    const createdResults: ShopifyProduct[] = [];
+    for (const product of productsToCreate) {
+      createdResults.push(await this.createProduct(product));
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
+    const updatedResults: any[][] = [];
+    for (const product of productsToUpdate) {
+      updatedResults.push(await this._updateSingleProduct(product, existingVariantsMap));
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+
     console.log('[Client] Sync complete.');
     return { created: createdResults, updated: updatedResults.flat() };
   }
@@ -159,7 +167,7 @@ export class ShopifyClient implements Client<ShopifyProduct> {
     return Promise.all(operations);
   }
 
- async updatePriceAndInventory(
+  async updatePriceAndInventory(
     updates: (ExistingVariantData & { newPrice: string, newInventory: number })[]
   ): Promise<any[]> {
     const operations: Promise<any>[] = [];
@@ -204,10 +212,43 @@ export class ShopifyClient implements Client<ShopifyProduct> {
   // --- Core API Methods ---
 
   async createProduct(product: Partial<ShopifyProduct>): Promise<ShopifyProduct> {
+    console.log(`-- creating ${product.title}`)
+
     const response = await this._request('products.json', {
       method: 'POST',
       body: JSON.stringify({ product }),
     });
+
+    // add variant images to variants
+    if (response.product.images && product.images && product.variants) {
+      const updatePromises: Promise<any>[] = [];
+      for (const variant of product.variants) {
+        if (variant.image) {
+          const imageIndex = product.images.map(x => x.src).indexOf(variant.image.src);
+          const shopifyImage = response.product.images[imageIndex];
+          if (shopifyImage?.id) {
+
+            const createdVariant = response.product.variants.find((v: ShopifyVariant) => v.sku === variant.sku);
+            if (createdVariant?.id) {
+              const variantId = createdVariant.id;
+              const endpoint = `variants/${variantId}.json`;
+              const payload = {
+                variant: {
+                  id: Number(variantId),
+                  image_id: shopifyImage.id,
+                },
+              };
+              updatePromises.push(this._request(endpoint, { method: 'PUT', body: JSON.stringify(payload) }));
+            }
+          }
+        }
+      }
+      if(updatePromises.length > 0) {
+        await Promise.all(updatePromises);
+      }
+    }
+
+
     return response.product;
   }
 
@@ -308,12 +349,34 @@ export class ShopifyClient implements Client<ShopifyProduct> {
       'Content-Type': 'application/json',
       'X-Shopify-Access-Token': this.accessToken,
     };
-    const response = await fetch(url, { ...options, headers });
-    if (!response.ok) {
-      const errorBody = await response.text();
-      throw new Error(`Shopify API Error: ${response.status} ${response.statusText} - ${errorBody}`);
+
+    let retries = 3;
+    let delay = 1000;
+
+    while (true) {
+      const response = await fetch(url, { ...options, headers });
+
+      if (response.status === 429) {
+        if (retries > 0) {
+          retries--;
+          const retryAfterHeader = response.headers.get('Retry-After');
+          const waitTime = retryAfterHeader ? parseInt(retryAfterHeader, 10) * 1000 : delay;
+          console.warn(`[Client] Rate limited. Retrying in ${waitTime / 1000}s... (${retries} retries left)`);
+          await new Promise(resolve => setTimeout(resolve, waitTime));
+          delay *= 2;
+          continue;
+        } else {
+          throw new Error('Shopify API request failed after multiple retries due to rate limiting.');
+        }
+      }
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`Shopify API Error: ${response.status} ${response.statusText} - ${errorBody}`);
+      }
+
+      return response.json();
     }
-    return response.json();
   }
 
 
