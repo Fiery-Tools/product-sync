@@ -94,17 +94,15 @@ Here’s a practical example of how you would use the library to convert a produ
 ```typescript
 import {
   ShopifyAdapter,
-  WooAdapter,
-  CanonicalProduct,
-  ShopifyProduct // Use this to type your platform-specific data
-} from 'product-sync';
+  WooAdapter // Use this to type your platform-specific data
+} from '@fiery-tools/product-sync';
 
 // 1. Instantiate the adapters you need.
 const shopifyAdapter = new ShopifyAdapter();
 const wooAdapter = new WooAdapter();
 
 // 2. Assume you have a product object fetched from the Shopify API.
-const shopifyProduct: ShopifyProduct = {
+const shopifyProduct = {
   id: "shopify123",
   title: "Cool Shirt",
   body_html: "A very cool shirt.",
@@ -116,7 +114,7 @@ const shopifyProduct: ShopifyProduct = {
 };
 
 // 3. Convert the Shopify product into the canonical model.
-const canonicalProduct: CanonicalProduct = shopifyAdapter.fromPlatform(shopifyProduct);
+const canonicalProduct = shopifyAdapter.fromPlatform(shopifyProduct);
 
 console.log('--- Canonical Product ---');
 console.log(canonicalProduct.variants);
